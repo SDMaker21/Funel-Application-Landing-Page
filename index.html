@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Funel - Agancy landing page</title>
+  <title>JSA Living - Venta de Muebles</title>
 
   <!-- 
     - favicon link
@@ -36,7 +36,7 @@
     <div class="container">
 
       <a href="#" class="logo">
-        <img src="./assets/images/logo.png" alt="Funel logo">
+        <span style="font-size:28px; font-weight:700; color:var(--royal-blue-dark); letter-spacing:1px;">JSA <span style="color:var(--bittersweet);">Living</span></span>
       </a>
 
       <div class="navbar-wrapper">
@@ -71,7 +71,7 @@
 
           </ul>
 
-          <button class="btn btn-primary">Get in touch</button>
+          <button class="btn btn-primary">Contáctanos</button>
 
         </nav>
 
@@ -98,17 +98,19 @@
 
           <div class="hero-content">
 
-            <h1 class="h1 hero-title">Your full-funnel growth agency</h1>
+            <h1 class="h1 hero-title">Muebles de calidad para tu hogar</h1>
 
             <p class="hero-text">
-              Capture and retrieve your lists across devices to help you stay organized at work, home, and on the go.
+              Descubre nuestra exclusiva colección de muebles modernos y clásicos. Elegancia, confort y durabilidad para cada rincón de tu hogar.
             </p>
 
-            <button class="btn btn-primary">Get started</button>
+            <button class="btn btn-primary">Ver Catálogo</button>
 
           </div>
 
-          <div class="hero-banner"></div>
+          <div class="hero-banner">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&auto=format&fit=crop" alt="Sala de estar moderna con muebles JSA Living" style="width:100%;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.15);">
+          </div>
 
         </div>
 
@@ -119,6 +121,48 @@
 
 
 
+
+      <!-- 
+        - #GALLERY
+      -->
+
+      <section class="gallery" id="gallery" style="padding: 80px 0; background: var(--white-2);">
+        <div class="container">
+
+          <h2 class="h2 section-title" style="color:var(--royal-blue-dark);text-align:center;margin-bottom:15px;">Nuestra Colección</h2>
+          <p style="text-align:center;color:var(--rythm);font-size:var(--fs-5);margin-bottom:50px;">Muebles diseñados para cada estilo de vida</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+
+            <figure style="border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);aspect-ratio:4/3;">
+              <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop" alt="Sala de estar moderna" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </figure>
+
+            <figure style="border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);aspect-ratio:4/3;">
+              <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&auto=format&fit=crop" alt="Comedor elegante" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </figure>
+
+            <figure style="border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);aspect-ratio:4/3;">
+              <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=500&auto=format&fit=crop" alt="Dormitorio lujoso" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </figure>
+
+            <figure style="border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);aspect-ratio:4/3;">
+              <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop" alt="Sofá moderno" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </figure>
+
+            <figure style="border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);aspect-ratio:4/3;">
+              <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=500&auto=format&fit=crop" alt="Cocina moderna" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </figure>
+
+            <figure style="border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);aspect-ratio:4/3;">
+              <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=500&auto=format&fit=crop" alt="Muebles de madera" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </figure>
+
+          </div>
+
+        </div>
+      </section>
+
       <!-- 
         - #ABOUT
       -->
@@ -128,12 +172,10 @@
 
           <div class="about-top">
 
-            <h2 class="h2 section-title">What we do</h2>
+            <h2 class="h2 section-title">Nuestro Equipo</h2>
 
             <p class="section-text">
-              Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back into the
-              development of
-              the asset through its charitable foundation.
+              Somos los fundadores de JSA Living, apasionados por llevar muebles de calidad a cada hogar. Conoce al equipo detrás de nuestra empresa.
             </p>
 
             <ul class="about-list">
@@ -141,14 +183,15 @@
               <li>
                 <div class="about-card">
 
-                  <div class="card-icon">
-                    <ion-icon name="briefcase-outline"></ion-icon>
-                  </div>
+                  <figure style="width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 20px;border:4px solid var(--bittersweet);">
+                    <img src="./readme-images/Angel Parra.jpeg" alt="Angel Parra" style="width:100%;height:100%;object-fit:cover;">
+                  </figure>
 
-                  <h3 class="h3 card-title">Paid Search and Social Management</h3>
+                  <h3 class="h3 card-title">Ángel Parra</h3>
+                  <p style="color:var(--bittersweet);font-weight:600;font-size:14px;margin-bottom:12px;">Director Ejecutivo</p>
 
                   <p class="card-text">
-                    Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back
+                    Líder visionario con más de 10 años de experiencia en la industria del mobiliario. Ángel dirige la estrategia global de JSA Living, garantizando que cada decisión refleje nuestro compromiso con la calidad, la innovación y la satisfacción del cliente.
                   </p>
 
                 </div>
@@ -157,14 +200,15 @@
               <li>
                 <div class="about-card">
 
-                  <div class="card-icon">
-                    <ion-icon name="chatbubbles-outline"></ion-icon>
-                  </div>
+                  <figure style="width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 20px;border:4px solid var(--bittersweet);">
+                    <img src="./readme-images/Santiago Medina.jfif" alt="Santiago Medina" style="width:100%;height:100%;object-fit:cover;">
+                  </figure>
 
-                  <h3 class="h3 card-title">Direct Response Content</h3>
+                  <h3 class="h3 card-title">Santiago Medina</h3>
+                  <p style="color:var(--bittersweet);font-weight:600;font-size:14px;margin-bottom:12px;">Especialista en Marketing</p>
 
                   <p class="card-text">
-                    Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back
+                    Experto en marketing digital y posicionamiento de marca. Santiago diseña las estrategias de comunicación de JSA Living, conectando nuestros productos con los clientes correctos a través de campañas creativas y efectivas que impulsan el crecimiento del negocio.
                   </p>
 
                 </div>
@@ -173,14 +217,15 @@
               <li>
                 <div class="about-card">
 
-                  <div class="card-icon">
-                    <ion-icon name="rocket-outline"></ion-icon>
-                  </div>
+                  <figure style="width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 20px;border:4px solid var(--bittersweet);">
+                    <img src="./readme-images/Juan Reyes.jfif" alt="Juan Reyes" style="width:100%;height:100%;object-fit:cover;">
+                  </figure>
 
-                  <h3 class="h3 card-title">CRO and Retention Optimizations</h3>
+                  <h3 class="h3 card-title">Juan Reyes</h3>
+                  <p style="color:var(--bittersweet);font-weight:600;font-size:14px;margin-bottom:12px;">Asesor Comercial</p>
 
                   <p class="card-text">
-                    Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back
+                    Profesional con amplia trayectoria en ventas y asesoría comercial. Juan guía a nuestros clientes en la selección de los muebles perfectos para su hogar, ofreciendo un servicio personalizado, honesto y orientado a encontrar la mejor solución para cada espacio.
                   </p>
 
                 </div>
@@ -193,20 +238,18 @@
           <div class="about-bottom">
 
             <figure class="about-bottom-banner">
-              <img src="./assets/images/about-banner.png" alt="about banner" class="about-banner">
+              <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&auto=format&fit=crop" alt="Sala de estar con muebles JSA Living" class="about-banner">
             </figure>
 
             <div class="about-bottom-content">
 
-              <h2 class="h2 section-title">We’re obsessed with growth</h2>
+              <h2 class="h2 section-title">Apasionados por el diseño de interiores</h2>
 
               <p class="section-text">
-                Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back into the
-                development of
-                the asset through its charitable foundation.
+                En JSA Living nos dedicamos a transformar espacios con muebles de alta calidad. Cada pieza está cuidadosamente seleccionada para combinar estética, funcionalidad y durabilidad en tu hogar.
               </p>
 
-              <button class="btn btn-secondary">Sign Up For Free</button>
+              <button class="btn btn-secondary">Ver Colección</button>
 
             </div>
 
@@ -226,12 +269,10 @@
       <section class="features" id="features">
         <div class="container">
 
-          <h2 class="h2 section-title">Our team is made up of all different backgrounds from all over the world.</h2>
+          <h2 class="h2 section-title">Muebles que transforman tu hogar en un espacio de lujo</h2>
 
           <p class="section-text">
-            Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back into the
-            development of
-            the asset through its charitable foundation.
+            Cada mueble de nuestra colección es seleccionado con atención al detalle, combinando materiales premium con diseños atemporales que elevan cualquier ambiente.
           </p>
 
           <ul class="features-list">
@@ -239,16 +280,14 @@
             <li class="features-item">
 
               <figure class="features-item-banner">
-                <img src="./assets/images/feature-1.png" alt="feature banner">
+                <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&auto=format&fit=crop" alt="Sala de estar JSA Living">
               </figure>
 
               <div class="feature-item-content">
-                <h3 class="h2 item-title">Cover your everyday expenses</h3>
+                <h3 class="h2 item-title">Colección de Salas y Comedores</h3>
 
                 <p class="item-text">
-                  Inspiration comes in many ways and you like to save everything from. sed do eiusmod tempor incididunt
-                  ut labore et
-                  dolore magna aliqua.
+                  Nuestros sofás, mesas y comedores combinan confort con elegancia. Diseñados para reunir a tu familia en torno a momentos únicos, con materiales de alta resistencia y acabados de lujo.
                 </p>
               </div>
 
@@ -257,16 +296,14 @@
             <li class="features-item">
 
               <figure class="features-item-banner">
-                <img src="./assets/images/feature-2.png" alt="feature banner">
+                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=500&auto=format&fit=crop" alt="Dormitorio JSA Living">
               </figure>
 
               <div class="feature-item-content">
-                <h3 class="h2 item-title">We offer low fees that are transparent</h3>
+                <h3 class="h2 item-title">Dormitorios y Espacios de Descanso</h3>
 
                 <p class="item-text">
-                  Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back into the
-                  development of
-                  the asset through its charitable foundation.
+                  Camas, closets y muebles auxiliares que convierten tu dormitorio en un santuario de descanso. Calidad premium para noches perfectas y mañanas llenas de energía.
                 </p>
               </div>
 
@@ -290,17 +327,17 @@
 
           <div class="cta-card">
 
-            <h3 class="cta-title">Try for 7 days free</h3>
+            <h3 class="cta-title">Descubre Nuestra Colección</h3>
 
             <p class="cta-text">
-              Each time a digital asset is purchased or sold, Sequoir donates a percentage of the fees back.
+              Suscríbete y sé el primero en conocer nuestras nuevas colecciones, ofertas exclusivas y tips de decoración para tu hogar.
             </p>
 
             <form action="" class="cta-form">
 
-              <input type="email" name="email" placeholder="Your email address">
+              <input type="email" name="email" placeholder="Tu correo electrónico">
 
-              <button type="submit" class="btn btn-secondary">Try It Now</button>
+              <button type="submit" class="btn btn-secondary">Suscribirme</button>
 
             </form>
 
@@ -331,31 +368,31 @@
           <form action="" class="contact-form">
 
             <div class="input-wrapper">
-              <label for="name" class="input-label">Name *</label>
+              <label for="name" class="input-label">Nombre *</label>
 
-              <input type="text" name="name" id="name" required placeholder="Type Name" class="input-field">
+              <input type="text" name="name" id="name" required placeholder="Tu nombre" class="input-field">
             </div>
 
             <div class="input-wrapper">
-              <label for="phone" class="input-label">Phone</label>
+              <label for="phone" class="input-label">Teléfono</label>
 
-              <input type="tel" name="phone" id="phone" placeholder="Type Phone Number" class="input-field">
+              <input type="tel" name="phone" id="phone" placeholder="Tu número de teléfono" class="input-field">
             </div>
 
             <div class="input-wrapper">
-              <label for="email" class="input-label">Email Address *</label>
+              <label for="email" class="input-label">Correo Electrónico *</label>
 
-              <input type="email" name="email" id="email" required placeholder="Type Email Address" class="input-field">
+              <input type="email" name="email" id="email" required placeholder="Tu correo electrónico" class="input-field">
             </div>
 
             <div class="input-wrapper">
-              <label for="message" class="input-label">How can we help? *</label>
+              <label for="message" class="input-label">¿Cómo podemos ayudarte? *</label>
 
-              <textarea name="message" id="message" placeholder="Type Description" required
+              <textarea name="message" id="message" placeholder="Cuéntanos sobre el mueble que buscas..." required
                 class="input-field"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Send Message</button>
+            <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
 
           </form>
 
@@ -382,7 +419,7 @@
         <div class="footer-brand">
 
           <a href="#" class="logo">
-            <img src="./assets/images/logo.png" alt="Funel logo">
+            <span style="font-size:22px; font-weight:700; color:var(--royal-blue-dark);">JSA <span style="color:var(--bittersweet);">Living</span></span>
           </a>
 
           <p class="footer-text">Follow us on</p>
@@ -542,3 +579,6 @@
 </body>
 
 </html>
+
+
+
