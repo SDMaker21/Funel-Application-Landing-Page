@@ -254,7 +254,15 @@ header .container {
 
 .hero .btn-primary { margin-inline: auto; }
 
-.hero-banner { display: none; }
+.hero-banner {
+  display: block;
+  margin-top: 40px;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 600px;
+  margin-inline: auto;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
 
 .shape-content {
   position: absolute;
