@@ -1,86 +1,134 @@
+# ==============================================================================
+# Flujo de Integración Continua (CI) para JSA Living
+# Este archivo define las verificaciones automáticas que GitHub Actions ejecuta
+# cada vez que se suben cambios o se abre un Pull Request.
+# ==============================================================================
+
+# Nombre visible del workflow en la pestaña "Actions" de GitHub
 name: CI - JSA Living
 
+# Eventos que disparan automáticamente este workflow
 on:
+  # Se ejecuta al hacer push directo a cualquiera de estas ramas
   push:
     branches:
       - main
       - master
       - v2
+  # Se ejecuta al abrir o actualizar un Pull Request hacia estas ramas
   pull_request:
     branches:
       - main
       - master
       - v2
+  # Permite ejecutar el workflow manualmente desde la interfaz web de GitHub Actions
   workflow_dispatch:
 
+# Permisos mínimos necesarios (principio de menor privilegio):
+# el token solo puede leer el código del repositorio, no modificarlo.
 permissions:
   contents: read
 
+# Control de concurrencia: si haces varios push seguidos a la misma rama/PR,
+# cancela la ejecución anterior en curso para ahorrar tiempo y recursos.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Lista de trabajos (jobs) del pipeline.
+# Por defecto corren en paralelo, salvo que indiquen dependencias con "needs".
 jobs:
+  # ----------------------------------------------------------------------------
+  # JOB 1: Validar estructura del proyecto, rutas de archivos y enlaces
+  # ----------------------------------------------------------------------------
   validate-assets:
     name: Validate Structure & Assets
+    # Máquina virtual Linux donde correrá este job
     runs-on: ubuntu-latest
     steps:
+      # Descarga el código del repositorio dentro del runner
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Instala Python 3.12 para ejecutar el script de validación
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # Verifica archivos obligatorios, IDs HTML únicos, rutas de imágenes/CSS/JS
+      # y enlaces locales dentro de README.md y README-ES.md
       - name: Validate HTML, CSS, assets, and documentation links
         run: python3 .github/scripts/validate_site.py
 
+  # ----------------------------------------------------------------------------
+  # JOB 2: Verificar sintaxis y calidad de HTML, CSS y JavaScript
+  # (Corre en paralelo con validate-assets)
+  # ----------------------------------------------------------------------------
   lint-code:
     name: Syntax & Lint Checks (HTML / CSS / JS)
     runs-on: ubuntu-latest
     steps:
+      # Descarga el código del repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Instala Node.js 20 para ejecutar las herramientas de análisis de código
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
+      # Comprueba que el archivo JavaScript no tenga errores de sintaxis
       - name: Check JavaScript syntax
         run: node --check assets/js/script.js
 
+      # Analiza la estructura básica de index.html con HTMLHint:
+      # doctype primero, etiquetas cerradas, IDs únicos, src no vacíos,
+      # atributos sin duplicar y etiqueta <title> presente.
       - name: Check HTML structure with HTMLHint
         run: |
           npx --yes htmlhint \
             --rules doctype-first,tag-pair,id-unique,src-not-empty,attr-no-duplication,title-require \
             index.html
 
+      # Analiza style.css con PostCSS para detectar errores de sintaxis CSS
+      # (llaves sin cerrar, reglas mal formadas, etc.)
       - name: Parse CSS with PostCSS
         run: npx --yes postcss-cli assets/css/style.css --no-map -o /tmp/style.validated.css
 
+  # ----------------------------------------------------------------------------
+  # JOB 3: Prueba de humo (Smoke Test) levantando un servidor HTTP local
+  # ----------------------------------------------------------------------------
   smoke-test:
     name: HTTP Server Smoke Test
     runs-on: ubuntu-latest
+    # Solo se ejecuta si los dos jobs anteriores terminaron con éxito
     needs:
       - validate-assets
       - lint-code
     steps:
+      # Descarga el código del repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Prepara Python 3.12 para usar su servidor HTTP integrado
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # Inicia un servidor web en el puerto 8000 en segundo plano (&),
+      # espera a que responda y comprueba con curl que la página principal,
+      # estilos, scripts e imágenes respondan con HTTP 200 OK.
       - name: Start static server and verify routes
         run: |
           python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/http-server.log 2>&1 &
           SERVER_PID=$!
+          # Asegura detener el servidor al finalizar el paso (incluso si falla)
           trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
 
+          # Espera hasta 15 segundos a que el servidor esté listo para recibir peticiones
           for i in $(seq 1 15); do
             if curl -fsS http://127.0.0.1:8000/ >/dev/null 2>&1; then
               break
@@ -88,6 +136,7 @@ jobs:
             sleep 1
           done
 
+          # Verifica que el HTML sirva el título esperado y que cada recurso devuelva 200 OK
           curl -fsS http://127.0.0.1:8000/ | grep -q "JSA Living - Venta de Muebles"
           curl -fsS -o /dev/null http://127.0.0.1:8000/assets/css/style.css
           curl -fsS -o /dev/null http://127.0.0.1:8000/assets/js/script.js
@@ -95,17 +144,24 @@ jobs:
           curl -fsS -o /dev/null http://127.0.0.1:8000/readme-images/project-logo.png
           echo "All HTTP smoke checks returned 200 OK."
 
+  # ----------------------------------------------------------------------------
+  # JOB 4: Empaquetado final del sitio estático en el entorno "preview"
+  # ----------------------------------------------------------------------------
   package-preview:
     name: Package Preview Artifact
     runs-on: ubuntu-latest
+    # Solo se ejecuta si el smoke-test pasó correctamente
     needs:
       - smoke-test
+    # Asocia este job al Environment "preview" en GitHub (Settings -> Environments)
     environment:
       name: preview
     steps:
+      # Descarga el código del repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Copia en la carpeta dist/ únicamente los archivos necesarios para publicar el sitio
       - name: Assemble static bundle
         run: |
           mkdir -p dist
@@ -118,6 +174,7 @@ jobs:
           cp "readme-images/Santiago Medina.jfif" dist/readme-images/
           cp "readme-images/Juan Reyes.jfif" dist/readme-images/
 
+      # Sube la carpeta dist/ como artefacto descargable "jsa-living-site" por 14 días
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
@@ -125,6 +182,7 @@ jobs:
           path: dist/
           retention-days: 14
 
+      # Escribe un resumen visual en Markdown en la pantalla de resultados del workflow
       - name: Write workflow summary
         run: |
           {
