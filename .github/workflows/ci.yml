@@ -1,0 +1,137 @@
+name: CI - JSA Living
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - v2
+  pull_request:
+    branches:
+      - main
+      - master
+      - v2
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-assets:
+    name: Validate Structure & Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate HTML, CSS, assets, and documentation links
+        run: python3 .github/scripts/validate_site.py
+
+  lint-code:
+    name: Syntax & Lint Checks (HTML / CSS / JS)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check JavaScript syntax
+        run: node --check assets/js/script.js
+
+      - name: Check HTML structure with HTMLHint
+        run: |
+          npx --yes htmlhint \
+            --rules doctype-first,tag-pair,id-unique,src-not-empty,attr-no-duplication,title-require \
+            index.html
+
+      - name: Parse CSS with PostCSS
+        run: npx --yes postcss-cli assets/css/style.css --no-map -o /tmp/style.validated.css
+
+  smoke-test:
+    name: HTTP Server Smoke Test
+    runs-on: ubuntu-latest
+    needs:
+      - validate-assets
+      - lint-code
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Start static server and verify routes
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/http-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+
+          for i in $(seq 1 15); do
+            if curl -fsS http://127.0.0.1:8000/ >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+
+          curl -fsS http://127.0.0.1:8000/ | grep -q "JSA Living - Venta de Muebles"
+          curl -fsS -o /dev/null http://127.0.0.1:8000/assets/css/style.css
+          curl -fsS -o /dev/null http://127.0.0.1:8000/assets/js/script.js
+          curl -fsS -o /dev/null http://127.0.0.1:8000/assets/images/logo_small.png
+          curl -fsS -o /dev/null http://127.0.0.1:8000/readme-images/project-logo.png
+          echo "All HTTP smoke checks returned 200 OK."
+
+  package-preview:
+    name: Package Preview Artifact
+    runs-on: ubuntu-latest
+    needs:
+      - smoke-test
+    environment:
+      name: preview
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Assemble static bundle
+        run: |
+          mkdir -p dist
+          cp index.html dist/
+          cp favicon.svg dist/
+          cp -r assets dist/
+          mkdir -p dist/readme-images
+          cp readme-images/project-logo.png dist/readme-images/
+          cp "readme-images/Angel Parra.jpeg" dist/readme-images/
+          cp "readme-images/Santiago Medina.jfif" dist/readme-images/
+          cp "readme-images/Juan Reyes.jfif" dist/readme-images/
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jsa-living-site
+          path: dist/
+          retention-days: 14
+
+      - name: Write workflow summary
+        run: |
+          {
+            echo "### JSA Living — CI Summary"
+            echo "- **Branch / Ref:** \`${{ github.ref_name }}\`"
+            echo "- **Asset & Link Validation:** Passed"
+            echo "- **HTML / CSS / JS Syntax Checks:** Passed"
+            echo "- **HTTP Smoke Test:** Passed"
+            echo "- **Preview Environment Bundle:** \`jsa-living-site\` uploaded"
+          } >> "$GITHUB_STEP_SUMMARY"
